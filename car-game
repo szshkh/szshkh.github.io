@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Two-Player Racing Game</title>
+	<style>
+		/* Set up the canvas */
+		canvas {
+			border: 1px solid black;
+		}
+		
+		/* Set up the cars */
+		.car {
+			width: 30px;
+			height: 50px;
+			position: absolute;
+			bottom: 0;
+			background-color: red;
+		}
+		
+		#car1 {
+			left: 50px;
+		}
+		
+		#car2 {
+			left: 120px;
+		}
+		
+		/* Set up the finish line */
+		.finish {
+			width: 3px;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			right: 50px;
+			background-color: black;
+		}
+	</style>
+</head>
+<body>
+	<!-- Add the canvas, cars, and finish line -->
+	<canvas id="canvas" width="200" height="200"></canvas>
+	<div id="car1" class="car"></div>
+	<div id="car2" class="car"></div>
+	<div class="finish"></div>
+	
+	<!-- Add a button to start the game -->
+	<button onclick="startGame()">Start Game</button>
+	
+	<!-- Add a display for the winner -->
+	<h2 id="winner"></h2>
+	
+	<script>
+		// Set up the canvas and context
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+		
+		// Define variables for the cars' positions and speeds
+		var car1Pos = 0;
+		var car2Pos = 0;
+		var car1Speed = 0;
+		var car2Speed = 0;
+		var finishLine = canvas.width - 50;
+		
+		// Define the game's main loop
+		function loop() {
+			// Move the cars based on their speeds
+			car1Pos += car1Speed;
+			car2Pos += car2Speed;
+			
+			// Draw the cars on the canvas
+			drawCar(car1Pos, "car1");
+			drawCar(car2Pos, "car2");
+			
+			// Check if either car has crossed the finish line
+			if (car1Pos >= finishLine || car2Pos >= finishLine) {
+				// Stop the game
+				car1Speed = 0;
+				car2Speed = 0;
+				var winner = (car1Pos >= finishLine) ? "Player 1" : "Player 2";
+				document.getElementById("winner").innerHTML = winner + " wins!";
+			}
+			
+			// Call the loop function again to create a game loop
+			requestAnimationFrame(loop);
+		}
+		
+		// Draw a car at the specified position
+		function drawCar(pos, id) {
+			var car = document.getElementById(id);
+			car.style.bottom = pos + "px";
+		}
+		
+		// Start the game
+		function startGame() {
+			// Reset the cars' positions and speeds
+			car1Pos = 0;
+			car2Pos = 0;
+			car1Speed = 2;
+			car2Speed = 2;
+			
+			// Clear the winner display
+			document.getElementById("winner").innerHTML = "";
+			
+			// Call the loop function to start the game loop
+			loop();
+		}
+	</script>
+</body
